@@ -1,0 +1,33 @@
+classDiagram
+    class App
+    class User
+    class UserService
+
+    class User
+    class UserService{
+        - UserRepository: repository
+        + UserService(db : UserRepository, hashAlg: String)
+        + Register(login: String, password: String) boolean
+        + UpdatePassword(login: String, currentp: String, newP: String)
+        + authenticate(login: String, password: String): boolean
+    }
+
+    class UserRepository{
+        <<Interface>>
+        + save (user: User) boolean
+        + update (user: User) boolean
+        + findByLogin(user:User) user
+    }
+
+
+    class InMemory{
+        - Map~String,User~ dados
+    }
+    UserRepository <|.. InFile
+    UserRepository <|.. InDB
+    UserRepository <|.. InMemory
+    App *--UserService
+    UserService ..> User
+    UserService *.. UserRepository
+    UserService ..>PasswordHashing
+
